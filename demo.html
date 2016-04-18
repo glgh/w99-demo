@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Car Following 101</title>
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/dropdowns-enhancement.css" rel="stylesheet">
+    <link href="css/demo.css" rel="stylesheet">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/track.js"></script>
+    <script src="js/model.js"></script>
+    <script src="js/status.js"></script>
+
+    <script src="js/status_old.js"></script>
+  </head>
+
+    <div id="wrapper">
+      <body>
+        <h1><center>Car Following Model - How It Works</center></h1>
+        <p>
+
+          The demonstration is inspired by <a href="https://youtu.be/7wm-pZp_mi0">this</a> video.
+        </p>
+
+        <hr>
+      <div id="left_column">
+        <h4>Simulation Controls</h4>
+        <button type="button" class="btn btn-primary" id="btn_start">Play</button>
+        <button type="button" class="btn btn-primary" id="btn_step">Step Forward</button>
+        <button type="button" class="btn btn-secondary" id="btn_pause">Pause</button>
+        <button type="button" class="btn btn-secondary" id="btn_test">Test</button>
+
+        <h4>Vehicles and Drivers</h4>
+        <div class="col-xs-6">
+          <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">Number of Cars</span>
+
+            <input type="text" class="form-control" id="n_cars">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-secondary" id="btn_n_cars_plus">+</button>
+              <button type="button" class="btn btn-secondary" id="btn_n_cars_minus">-</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-group">
+          <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Driver Aggressiveness <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li>
+              <input type="radio" id="options_agg_label" name="options_agg" value="0" disabled="">
+              <label for="options_agg_label">Driver Aggressiveness</label>
+            </li>
+            <li>
+              <input type="radio" id="options_agg_high" name="options_agg" value="1" checked="">
+              <label for="options_agg_high">Aggressive</label>
+            </li>
+            <li>
+              <input type="radio" id="options_agg_mid" name="options_agg" value="2">
+              <label for="options_agg_mid">Average</label>
+            </li>
+            <li>
+              <input type="radio" id="options_agg_low" name="options_agg" value="3">
+              <label for="options_agg_low">Conservative</label>
+            </li>
+          </ul>
+        </div>
+
+        <center><canvas id="track" width="500" height="500"></canvas></center>
+
+      </div>
+
+      <div id="right_column">
+      </div>
+
+    </div>
+
+    <script>
+      function setStatusCanvas(n){
+        for (var i = 0; i < n; i++) {
+          var new_canvas = document.createElement("canvas");
+          new_canvas.id = "status" + (i+1).toString();
+          new_canvas.width = STATUS_CANVAS_WIDTH;
+          new_canvas.height = STATUS_CANVAS_HEIGHT;
+          document.getElementById("right_column").appendChild(new_canvas);
+        }
+      }
+
+      $(document).ready(function(){
+        var model = new w99(W99_DEFAULT);
+        drawAll([]);
+        model.setCars(10, 28.2);
+        setStatusCanvas(10);
+
+        $("#btn_start").click(function(){
+          model.simRunContinous();
+        });
+        $("#btn_step").click(function(){
+          model.simRunStep();
+        });
+        $("#btn_pause").click(function(){
+          model.simPause();
+        });
+      });
+
+    </script>
+
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/dropdowns-enhancement.js"></script>
+
+  </body>
+</html>

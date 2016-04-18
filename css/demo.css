@@ -1,0 +1,14 @@
+#wrapper{
+   width:1020px;
+   margin:0 auto;
+}
+#left_column{
+   float:left;
+   width:600px;
+   padding: 5px;
+}
+#right_column{
+   float:right;
+   width:420px;
+   padding: 5px;
+}
