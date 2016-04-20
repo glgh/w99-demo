@@ -141,8 +141,10 @@
           model.simPause();
         });
         $("#btn_reset").click(function(){
-          //reset model
-          //$("label[id^='btn_cars_']").attr( "disabled", false);
+          model.simPause();
+          setStatusCanvas(global_n_car);
+          model.setCars(global_n_car, global_spacing);
+          $("label[id^='btn_cars_']").attr( "disabled", false);
         });
 
         //use click event - not change - change doesn't fire every time
