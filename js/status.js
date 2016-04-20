@@ -41,7 +41,15 @@ const STATUS_POINTER_F_COLOR = 'grey'; //'Green';
 const STATUS_POINTER_W_COLOR = 'Green'; //'Grey';
 const STATUS_POINTER_O_STYLE = 'Black';
 
+const STATUS_EMPTY_COLOR = '#e6e6e6';
 
+Number.prototype.m2ft = function() {
+    return this.valueOf() * METER_TO_FT;
+};
+
+Number.prototype.mps2mph = function() {
+    return this.valueOf() * MPS_TO_MPH;
+};
 
 Number.prototype.dx2x = function() {
   return Math.round((this.valueOf() - DX_MIN)/(DX_MAX - DX_MIN)*STATUS_PLOT_WIDTH);
@@ -74,6 +82,8 @@ function plotStatus(canvas, car, index, parameters) {
   context.fill();
   context.closePath();
   context.font = "12px Arial";
+  context.textAlign = "start";
+  context.textBaseline = "alphabetic";
   context.fillText(index.toFixed(0), 19, 12);
 
   context.translate(STATUS_LEFT_PADDING, STATUS_TOP_PADDING);
@@ -165,11 +175,15 @@ function plotStatus(canvas, car, index, parameters) {
 
   //dv
   context.font = '12px Arial';
+  context.textAlign = "start";
+  context.textBaseline = "alphabetic";
   context.fillText('dv', -40, STATUS_PLOT_HEIGHT/2 - 4);
   context.fillText('(mph)', -49, STATUS_PLOT_HEIGHT/2 + 8);
 
   //dv tick
   context.font = '10px Arial';
+  context.textAlign = "end";
+  context.textBaseline = "middle";
   var dv_tick = STATUS_DV_TICK_UNIT * Math.ceil(DV_MIN / STATUS_DV_TICK_UNIT);
   while (dv_tick < DV_MAX) {
     context.beginPath();
@@ -181,18 +195,22 @@ function plotStatus(canvas, car, index, parameters) {
     context.globalAlpha = 1;
     context.closePath();
     var dv_label = dv_tick.mps2mph().toFixed(0).toString();
-    var dv_label_x = -context.measureText(dv_label).width - 5;
-    var dv_label_y = dv_tick.dv2y() + 5
+    var dv_label_x = - 5;
+    var dv_label_y = dv_tick.dv2y();
     context.fillText(dv_label, dv_label_x, dv_label_y);
     dv_tick += STATUS_DV_TICK_UNIT
 }
 
   //dx
   context.font = '12px Arial';
-  context.fillText('dx (ft)', STATUS_PLOT_WIDTH/2 - 12, STATUS_PLOT_HEIGHT + 25);
+  context.textAlign = "center";
+  context.textBaseline = "alphabetic";
+  context.fillText('dx (ft)', STATUS_PLOT_WIDTH/2, STATUS_PLOT_HEIGHT + 25);
 
   //dx tick
   context.font = '10px Arial';
+  context.textAlign = "center";
+  context.textBaseline = "alphabetic";
   var dx_tick = 0;
   while (dx_tick < DX_MAX) {
     context.beginPath();
@@ -204,11 +222,11 @@ function plotStatus(canvas, car, index, parameters) {
     context.globalAlpha = 1;
     context.closePath();
     var dx_label = dx_tick.m2ft().toFixed(0).toString();
-    var dx_label_x = dx_tick.dx2x() - context.measureText(dx_label).width/2
+    var dx_label_x = dx_tick.dx2x();
     var dx_label_y = STATUS_PLOT_HEIGHT + 13;
     context.fillText(dx_label, dx_label_x, dx_label_y);
     dx_tick += STATUS_DX_TICK_UNIT
-}
+  }
 
   // 7. Plot Status Pointer
   context.beginPath();
@@ -250,8 +268,10 @@ function plotStatus(canvas, car, index, parameters) {
 
   // 8. Plot Status text
   context.font = '10px Arial';
+  context.textAlign = "start";
+  context.textBaseline = "top";
   context.fillStyle = 'Black'
-  var message_y0 = 7;
+  var message_y0 = 0;
   var message_y_increment = 11;
   var message_x = STATUS_PLOT_WIDTH + 6;
   context.fillText('x: ' + car.x.toFixed(1), message_x, message_y0 + message_y_increment*0);
@@ -269,10 +289,22 @@ function plotStatus(canvas, car, index, parameters) {
   context.translate(-STATUS_LEFT_PADDING, -STATUS_TOP_PADDING);
 }
 
-Number.prototype.m2ft = function() {
-    return this.valueOf() * METER_TO_FT;
-};
+function plotStatusEmpty(canvas, car, index) {
+  var context = canvas.getContext("2d");
+  context.clearRect(0, 0, STATUS_CANVAS_WIDTH, STATUS_CANVAS_HEIGHT);
 
-Number.prototype.mps2mph = function() {
-    return this.valueOf() * MPS_TO_MPH;
-};
+  //Background
+  context.beginPath();
+  context.rect(STATUS_LEFT_PADDING, STATUS_TOP_PADDING, STATUS_PLOT_WIDTH, STATUS_PLOT_HEIGHT);
+  context.fillStyle = STATUS_EMPTY_COLOR;
+  context.fill();
+  context.closePath();
+
+  //Car Info
+  context.fillStyle = car.color;
+  context.font = "20px Arial";
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillText("Car #" + index.toFixed(0) + " is ready", STATUS_LEFT_PADDING + STATUS_PLOT_WIDTH/2, STATUS_TOP_PADDING + STATUS_PLOT_HEIGHT/2);
+
+}

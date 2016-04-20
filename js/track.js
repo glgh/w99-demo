@@ -1,18 +1,9 @@
-const TRACK_CANVAS_WIDTH = 500; //px
-const TRACK_CANVAS_HEIGHT = 500; //px
+const TRACK_CANVAS_WIDTH = 400; //px
+const TRACK_CANVAS_HEIGHT = 400; //px
 const TRACK_RADIUS = 45; //m - use 58
 const TRACK_WIDTH = 3.7; //m
 const TRACK_COLOR = "#D3D3D3";
 const TRACK_DISPLAY_FACTOR = 3.28; //m -> px
-
-function drawAll(cars) {
-  drawTrack();
-  var n = cars.length
-  if (n <= 0) {return} // # of car must > 0
-  for (var i = 0; i < n; i++) {
-    drawCar(cars[i]);
-  }
-}
 
 function drawTrack() {
   var context = document.getElementById("track").getContext("2d");

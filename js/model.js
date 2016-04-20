@@ -1,29 +1,30 @@
-var W99_DEFAULT = {}
-W99_DEFAULT.cc0 =  1.50; //Standstill Distance - m
-W99_DEFAULT.cc1 =  1.30; //Headway Time - second
-W99_DEFAULT.cc2 =  4.00; //Following Variation ("max drift") - m
-W99_DEFAULT.cc3 =-12.00; //Threshold for Entering 'Following' - s
-W99_DEFAULT.cc4 = -0.25; //Negative 'Following' Threshold - m/s
-W99_DEFAULT.cc5 =  0.35; //Positive 'Following' Threshold - m/s
-W99_DEFAULT.cc6 = 11.44/17000; //Speed Dependency of Oscillation - 10^-4 rad/s
-W99_DEFAULT.cc7 =  0.25; //Oscillation Acceleration - m/s^2
-W99_DEFAULT.cc8 =  2.00; //Standstill Acceleration - m/s^2
-W99_DEFAULT.cc9 =  1.50; //Acceleration at 80km/h - m/s^2
+var W99_DEFAULT = {
+  cc0:  1.50, //Standstill Distance - m
+  cc1:  1.30, //Headway Time - second
+  cc2:  4.00, //Following Variation ("max drift") - m
+  cc3:-12.00, //Threshold for Entering 'Following' - s
+  cc4: -0.25, //Negative 'Following' Threshold - m/s
+  cc5:  0.35, //Positive 'Following' Threshold - m/s
+  cc6: 11.44/17000, //Speed Dependency of Oscillation - 10^-4 rad/s
+  cc7:  0.25, //Oscillation Acceleration - m/s^2
+  cc8:  2.00, //Standstill Acceleration - m/s^2
+  cc9:  1.50, //Acceleration at 80km/h - m/s^2
+}
 
 const CAR_WIDTH = 1.8; //m
 const CAR_LENGTH = 4.5; //m
-var CAR_COLOR = ["SlateBlue", "Crimson", "BlueViolet", "Black", "Magenta",
-                 "DarkOrange", "cadetblue", "deepskyblue", "darksalmon", "goldenrod"];
+var CAR_COLOR = ["DarkGreen", "Crimson", "DarkViolet", "Black", "Fuchsia",
+                 "DarkOrange", "cadetblue", "deepskyblue", "Tomato", "goldenrod",
+                  "SlateBlue", "MediumBlue"];
 const N_CAR_MAX = 12;
 
 const DISPLAY_RESOLUTION = 10;
 const SIMULATION_RESOLUTION = 10;
 
 function w99(w99_parameters){
-  this.parameters = w99_parameters;
+  this.parameters = jQuery.extend(true, {}, w99_parameters); //clone, not refer to
   this.cars = [];
   this.interval_handle;
-
 }
 
 w99.prototype.addCar = function(color, seed, x, v, a, v_desired) {
@@ -42,13 +43,18 @@ w99.prototype.addCar = function(color, seed, x, v, a, v_desired) {
 }
 
 w99.prototype.setCars = function(n, headway){
-    var x0 = 0;
-    for (var i = 0; i < n; i++) {
-      this.addCar(CAR_COLOR[i], 42+i, x0+i*headway, 0, 0, 60);
-    }
+  this.cars = [];
+  var x0 = 0;
+  for (var i = 0; i < n; i++) {
+    this.addCar(CAR_COLOR[i], 42+i, x0+i*headway, 0, 0, 60);
+  }
+  this.redrawAll(false);
 }
 
-w99.prototype.reset = function() {}
+w99.prototype.clearCars = function() {
+  this.cars = [];
+  this.redrawAll(false);
+}
 
 w99.prototype.simRunContinous = function() {
   this.simPause();
@@ -74,8 +80,7 @@ w99.prototype.nextStep = function() {
 
   var dt = 1/SIMULATION_RESOLUTION;
   this.calculateCarStatus(dt); //calculate next step
-  drawAll(this.cars);
-  updateCarStatus(this.cars, this.parameters);
+  this.redrawAll(true);
 }
 
 w99.prototype.calculateCarStatus = function(dt) {
@@ -90,6 +95,24 @@ w99.prototype.calculateCarStatus = function(dt) {
     w99_results = this.carFollowing(this.cars[i_leader], this.cars[i]);
     this.cars[i].a = w99_results[0];
     this.cars[i].status = w99_results[1];
+  }
+}
+
+w99.prototype.redrawAll = function(drawStatus){
+  var n = this.cars.length;
+
+  drawTrack(); //draw track
+  for (var i = 0; i < n; i++) {
+    var car = this.cars[i];
+    drawCar(car); //draw car
+
+    //draw status
+    var canvas_status = document.getElementById('status' +  (i+1).toString());
+    if (drawStatus){
+      plotStatus(canvas_status, car, i+1, this.parameters); //draw status
+    } else {
+      plotStatusEmpty(canvas_status, car, i+1); //draw status - empty
+    }
   }
 }
 
@@ -114,6 +137,7 @@ w99.prototype.carFollowing = function(leader, follower) {
     var sdxc = cc0;
   } else {
     var v_slower = ((dv >= 0) | (leader.a < -1))? follower.v : leader.v + dv*(simpleRandom(follower.seed) - 0.5);
+    //v_slower = Math.max(v_slower, 0); //fix negative v_slower???
     var sdxc = cc0 + cc1*v_slower; //minumum following distance considered safe by driver
   }
   var sdxo = sdxc + cc2; //maximum following distance (upper limit of car-following process)
