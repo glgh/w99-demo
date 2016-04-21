@@ -28,10 +28,10 @@
         <hr>
       <div id="left_column">
         <h4>Simulation Controls</h4>
-        <button type="button" class="btn btn-primary" id="btn_start">Start</button>
-        <button type="button" class="btn btn-primary" id="btn_step">Step Forward</button>
-        <button type="button" class="btn btn-secondary" id="btn_pause">Pause</button>
-        <button type="button" class="btn btn-secondary" id="btn_reset">Reset</button>
+        <button type="button" class="btn btn-success" id="btn_start">Start</button>
+        <button type="button" class="btn btn-success" id="btn_step">Step Forward</button>
+        <button type="button" class="btn btn-warning" id="btn_pause">Pause</button>
+        <button type="button" class="btn btn-danger" id="btn_reset">Reset</button>
 
         <h4>Vehicles and Drivers</h4>
         <h5>Number of Cars</h5>
@@ -126,8 +126,6 @@
         setStatusCanvas(global_n_car);
         var model = new w99(W99_DEFAULT);
         model.setCars(global_n_car, global_spacing);
-        //drawAll([]);
-        //model.simRunStep();
 
         $("#btn_start").click(function(){
           model.simRunContinous();
@@ -156,6 +154,7 @@
             global_spacing = Math.min(15, 2*Math.PI*TRACK_RADIUS);
           } else {
             global_n_car = +this.getAttribute('value');
+            //need to recalculate spacing if use even
           }
           //console.log(global_n_car, global_spacing);
           setStatusCanvas(global_n_car);

@@ -1,6 +1,8 @@
 #wrapper{
-   width:1020px;
-   margin:0 auto;
+   width:100%;
+   min-width:1020px;
+   height:auto;
+   margin:25px;
 }
 #left_column{
    float:left;
@@ -8,7 +10,9 @@
    padding: 5px;
 }
 #right_column{
-   float:right;
-   width:420px;
+   /*float:right;*/
+   overflow: hidden;
+   min-width:420px;
+   height:auto;
    padding: 5px;
 }
