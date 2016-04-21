@@ -120,12 +120,13 @@
         }
       }
 
+      const DEFAULT_N_CAR = 8;
+      const DEFAULT_SPACING = 15;
+
       $(document).ready(function(){
-        var global_n_car = 8;
-        var global_spacing = 15;
-        setStatusCanvas(global_n_car);
         var model = new w99(W99_DEFAULT);
-        model.setCars(global_n_car, global_spacing);
+        setStatusCanvas(DEFAULT_N_CAR);
+        model.setCars(DEFAULT_N_CAR, DEFAULT_SPACING);
 
         $("#btn_start").click(function(){
           model.simRunContinous();
@@ -140,25 +141,25 @@
         });
         $("#btn_reset").click(function(){
           model.simPause();
-          setStatusCanvas(global_n_car);
-          model.setCars(global_n_car, global_spacing);
+          //setStatusCanvas(model.cars.length);
+          model.resetCars();
           $("label[id^='btn_cars_']").attr( "disabled", false);
         });
 
         //use click event - not change - change doesn't fire every time
         $("label[id^='btn_cars_']").click(function(){
           var value = this.getAttribute('value');
+          var n_car = model.cars.length; //default n_car
+          var spacing = model.spacing; //default spacing
           if (value === "even") {
-            global_spacing = 2*Math.PI*TRACK_RADIUS/global_n_car;
+            spacing = undefined;
           } else if (value === "close") {
-            global_spacing = Math.min(15, 2*Math.PI*TRACK_RADIUS);
+            spacing = DEFAULT_SPACING;
           } else {
-            global_n_car = +this.getAttribute('value');
-            //need to recalculate spacing if use even
+            n_car = +this.getAttribute('value');
           }
-          //console.log(global_n_car, global_spacing);
-          setStatusCanvas(global_n_car);
-          model.setCars(global_n_car, global_spacing);
+          setStatusCanvas(n_car);
+          model.setCars(n_car, spacing);
         });
 
         $("#btn_agg_high").click(function(){

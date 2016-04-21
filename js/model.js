@@ -1,6 +1,6 @@
 var W99_DEFAULT = {
   cc0:  1.50, //Standstill Distance - m
-  cc1:  1.30, //Headway Time - second
+  cc1:  1.30, //spacing Time - second
   cc2:  4.00, //Following Variation ("max drift") - m
   cc3:-12.00, //Threshold for Entering 'Following' - s
   cc4: -0.25, //Negative 'Following' Threshold - m/s
@@ -24,6 +24,7 @@ const SIMULATION_RESOLUTION = 10;
 function w99(w99_parameters){
   this.parameters = jQuery.extend(true, {}, w99_parameters); //clone, not refer to
   this.cars = [];
+  this.spacing = undefined;
   this.interval_handle;
 }
 
@@ -42,18 +43,22 @@ w99.prototype.addCar = function(color, seed, x, v, a, v_desired) {
     this.cars.push(car); //push to the begining
 }
 
-w99.prototype.setCars = function(n, headway){
+w99.prototype.setCars = function(n, spacing){
+  this.spacing = spacing;
+  if (spacing === undefined){
+    spacing = 2*Math.PI*TRACK_RADIUS/n;
+  }
+
   this.cars = [];
   var x0 = 0;
   for (var i = 0; i < n; i++) {
-    this.addCar(CAR_COLOR[i], 42+i, x0+i*headway, 0, 0, 60);
+    this.addCar(CAR_COLOR[i], 42+i, x0+i*spacing, 0, 0, 60);
   }
   this.redrawAll(false);
 }
 
-w99.prototype.clearCars = function() {
-  this.cars = [];
-  this.redrawAll(false);
+w99.prototype.resetCars = function() {
+  this.setCars(this.cars.length, this.spacing);
 }
 
 w99.prototype.simRunContinous = function() {
