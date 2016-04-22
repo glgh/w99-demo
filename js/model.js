@@ -1,4 +1,4 @@
-var W99_DEFAULT = {
+var W99_ORIGINAL = {
   cc0:  1.50, //Standstill Distance - m
   cc1:  1.30, //spacing Time - second
   cc2:  4.00, //Following Variation ("max drift") - m
@@ -11,15 +11,28 @@ var W99_DEFAULT = {
   cc9:  1.50, //Acceleration at 80km/h - m/s^2
 }
 
+var W99_DEFAULT = {
+  cc0:  1.50, //Standstill Distance - m
+  cc1:  1.30, //spacing Time - second
+  cc2:  4.00, //Following Variation ("max drift") - m
+  cc3:-12.00, //Threshold for Entering 'Following' - s
+  cc4: -0.25*5, //Negative 'Following' Threshold - m/s
+  cc5:  0.35*5, //Positive 'Following' Threshold - m/s
+  cc6: 11.44/17000, //Speed Dependency of Oscillation - 10^-4 rad/s
+  cc7:  0.25, //Oscillation Acceleration - m/s^2
+  cc8:  2.00, //Standstill Acceleration - m/s^2
+  cc9:  1.50, //Acceleration at 80km/h - m/s^2
+}
+
 const CAR_WIDTH = 1.8; //m
 const CAR_LENGTH = 4.5; //m
-var CAR_COLOR = ["DarkGreen", "Crimson", "DarkViolet", "Black", "Fuchsia",
+const CAR_COLOR = ["DarkGreen", "Crimson", "DarkViolet", "Black", "Fuchsia",
                  "DarkOrange", "cadetblue", "deepskyblue", "Tomato", "goldenrod",
-                  "SlateBlue", "MediumBlue"];
-const N_CAR_MAX = 12;
+                  "SlateBlue", "MediumBlue", "Maroon", "DarkKhaki"];
+const N_CAR_MAX = 14;
 
-const DISPLAY_RESOLUTION = 10;
-const SIMULATION_RESOLUTION = 10;
+const DISPLAY_RESOLUTION = 20;
+const SIMULATION_RESOLUTION = 20;
 
 function w99(w99_parameters){
   this.parameters = jQuery.extend(true, {}, w99_parameters); //clone, not refer to
@@ -163,7 +176,9 @@ w99.prototype.carFollowing = function(leader, follower) {
   follower_status.sdvo = sdvo;
 
   if ((dv < sdvo) && (dx <= sdxc)) {
-    follower_status.text = 'Decelerate - Increase Distance';
+    follower_status.description = 'Decelerate - Increase Distance';
+    follower_status.message_condition = 'Too Close DANGER!';
+    follower_status.message_action = 'Decelerate';
     follower_status.code = 'A';
     follower_a = 0;
     if (follower.v > 0) {
@@ -182,7 +197,9 @@ w99.prototype.carFollowing = function(leader, follower) {
     }
 
   } else if ((dv<sdvc) && (dx<sdxv)){
-    follower_status.text = 'Decelerate - Decrease Distance';
+    follower_status.description = 'Decelerate - Decrease Distance';
+    follower_status.message_condition = 'Too Close';
+    follower_status.message_action = 'Decelerate';
     follower_status.code = 'B';
     //follower_a = Math.max(0.5*dv*dv/(-dx+sdxc-0.1), -10 + Math.sqrt(follower.v));
     follower_a = Math.max(0.5*dv*dv/(-dx+sdxc-0.1), -10); //Capped by G
@@ -190,7 +207,9 @@ w99.prototype.carFollowing = function(leader, follower) {
     //-10 + Math.sqrt(follower.v) - realistic? no? higher v higher a?
 
   } else if ((dv<sdvo) && (dx<sdxo)){
-    follower_status.text = 'Accelerate/Decelerate - Keep Distance';
+    follower_status.description = 'Accelerate/Decelerate - Keep Distance';
+    follower_status.message_condition = 'Keep Distance';
+    follower_status.message_action = 'Follow';
     follower_status.code = 'f';
     if (follower.a <= 0) {
       follower_a = Math.min(follower.a, -cc7);
@@ -201,7 +220,9 @@ w99.prototype.carFollowing = function(leader, follower) {
     }
 
   } else {
-    follower_status.text = 'Accelerate/Relax - Increase/Keep Speed';
+    follower_status.description = 'Accelerate/Relax - Increase/Keep Speed';
+    follower_status.message_condition = 'Free Flow';
+    follower_status.message_action = 'Accelerate';
     follower_status.code = 'w';
     if (dx > sdxc){
       if (follower.status === 'w') {
@@ -216,6 +237,9 @@ w99.prototype.carFollowing = function(leader, follower) {
       }
       //if (follower.length >= 6.5) {follower_a *= 0.5}
       follower_a = Math.min(follower_a, follower.v_desired - follower.v);
+      if (Math.abs(follower.v_desired - follower.v) < 0.1){
+        follower_status.message_action = 'Top Speed';
+      }
     }
   }
   return [follower_a, follower_status];

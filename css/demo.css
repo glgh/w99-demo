@@ -1,12 +1,12 @@
 #wrapper{
    width:100%;
-   min-width:1020px;
+   min-width:920px;
    height:auto;
    margin:25px;
 }
 #left_column{
    float:left;
-   width:600px;
+   width:500px;
    padding: 5px;
 }
 #right_column{

@@ -21,8 +21,8 @@
       <body>
         <h1><center>Car Following Model - How It Works</center></h1>
         <p>
-
-          The demonstration is inspired by <a href="https://youtu.be/7wm-pZp_mi0">this</a> video.
+          Your favorite Wiedemann 99 Car Following Model. The demonstration is inspired by <a href="https://youtu.be/7wm-pZp_mi0">this</a> video.
+          <font color="grey">Created by <a href="mailto:GuanghuiLiu@mail.com">GLiu</a>.</font>
         </p>
 
         <hr>
@@ -51,6 +51,9 @@
           <label class="btn btn-default" id="btn_cars_n_12" value=12>
             <input type="radio"> 12
           </label>
+          <label class="btn btn-default" id="btn_cars_n_14" value=14>
+            <input type="radio"> 14
+          </label>
         </div>
 
         <div class="btn-group" id="form_cars_spacing" data-toggle="buttons" value='form_cars_spacing'>
@@ -58,7 +61,7 @@
             <input type="radio"> Evenly Spaced
           </label>
           <label class="btn btn-default active" id="btn_cars_spacing_close" value='close'>
-            <input type="radio" checked> Closely Lined up
+            <input type="radio" checked> Closely Lined Up
           </label>
         </div>
 
@@ -75,7 +78,7 @@
           </label>
         </div>
 
-        <h5>Driver Attention (not really - fix it)</h5>
+        <h5>Driver Attention</h5>
         <div class="btn-group" data-toggle="buttons">
           <label class="btn btn-default" id="btn_att_high">
             <input type="radio"> Distracted
@@ -173,13 +176,19 @@
         });
 
         $("#btn_att_high").click(function(){
-          model.parameters.cc7 = W99_DEFAULT.cc7 * 10;
+          model.parameters.cc4 = W99_DEFAULT.cc4 * 2;
+          model.parameters.cc5 = W99_DEFAULT.cc5 * 2;
+          //model.parameters.cc7 = W99_DEFAULT.cc7 * 10;
         });
         $("#btn_att_mid").click(function(){
-          model.parameters.cc7 = W99_DEFAULT.cc7;
+          model.parameters.cc4 = W99_DEFAULT.cc4;
+          model.parameters.cc5 = W99_DEFAULT.cc5;
         });
         $("#btn_att_low").click(function(){
-          model.parameters.cc7 = W99_DEFAULT.cc7 * 0.1;
+          model.parameters.cc4 = W99_DEFAULT.cc4 * 0.2;
+          model.parameters.cc5 = W99_DEFAULT.cc5 * 0.2;
+
+          //model.parameters.cc7 = W99_DEFAULT.cc7 * 0.1;
         });
 
       });
