@@ -1,8 +1,8 @@
 const METER_TO_FT = 3.28084;
 const MPS_TO_MPH = 2.23694;
 
-const STATUS_CANVAS_WIDTH = 400;
-const STATUS_CANVAS_HEIGHT = 160;
+const STATUS_CANVAS_WIDTH = 350;
+const STATUS_CANVAS_HEIGHT = 150;
 
 const STATUS_LEFT_PADDING = 50;
 const STATUS_RIGHT_PADDING = 100;
@@ -272,8 +272,8 @@ function plotStatus(canvas, car, index, parameters) {
   context.textAlign = "start";
   context.textBaseline = "top";
   context.fillStyle = 'Black'
-  var message_y0 = -3;
-  var message_y_increment = 10.5;
+  var message_y0 = -4;
+  var message_y_increment = 10;
   var message_x = STATUS_PLOT_WIDTH + 6;
   var message = ['x: ' + car.x.toFixed(1),
                  'v: ' + car.v.toFixed(1),

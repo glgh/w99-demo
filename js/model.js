@@ -1,6 +1,6 @@
 var W99_ORIGINAL = {
   cc0:  1.50, //Standstill Distance - m
-  cc1:  1.30, //spacing Time - second
+  cc1:  1.30, //Spacing Time - second
   cc2:  4.00, //Following Variation ("max drift") - m
   cc3:-12.00, //Threshold for Entering 'Following' - s
   cc4: -0.25, //Negative 'Following' Threshold - m/s
@@ -12,12 +12,12 @@ var W99_ORIGINAL = {
 }
 
 var W99_DEFAULT = {
-  cc0:  1.50, //Standstill Distance - m
-  cc1:  1.30, //spacing Time - second
-  cc2:  4.00, //Following Variation ("max drift") - m
+  cc0:  1.50*0.9, //Standstill Distance - m
+  cc1:  1.30*0.9, //Spacing Time - second
+  cc2:  4.00*2, //Following Variation ("max drift") - m
   cc3:-12.00, //Threshold for Entering 'Following' - s
-  cc4: -0.25*5, //Negative 'Following' Threshold - m/s
-  cc5:  0.35*5, //Positive 'Following' Threshold - m/s
+  cc4: -0.25*6, //Negative 'Following' Threshold - m/s
+  cc5:  0.35*6, //Positive 'Following' Threshold - m/s
   cc6: 11.44/17000, //Speed Dependency of Oscillation - 10^-4 rad/s
   cc7:  0.25, //Oscillation Acceleration - m/s^2
   cc8:  2.00, //Standstill Acceleration - m/s^2
@@ -25,10 +25,11 @@ var W99_DEFAULT = {
 }
 
 const CAR_WIDTH = 1.8; //m
-const CAR_LENGTH = 4.5; //m
+const CAR_LENGTH = 5; //m
 const CAR_COLOR = ["DarkGreen", "Crimson", "DarkViolet", "Black", "Fuchsia",
                  "DarkOrange", "cadetblue", "deepskyblue", "Tomato", "goldenrod",
-                  "SlateBlue", "MediumBlue", "Maroon", "DarkKhaki"];
+                  "SlateBlue", "MediumBlue", "Maroon", "DarkKhaki", "#31B404",
+                  "#6E6E6E"];
 const N_CAR_MAX = 14;
 
 const DISPLAY_RESOLUTION = 20;
@@ -65,7 +66,7 @@ w99.prototype.setCars = function(n, spacing){
   this.cars = [];
   var x0 = 0;
   for (var i = 0; i < n; i++) {
-    this.addCar(CAR_COLOR[i], 42+i, x0+i*spacing, 0, 0, 60);
+    this.addCar(CAR_COLOR[i], 42+i, x0+i*spacing, 0, 0, 25);
   }
   this.redrawAll(false);
 }
@@ -177,7 +178,7 @@ w99.prototype.carFollowing = function(leader, follower) {
 
   if ((dv < sdvo) && (dx <= sdxc)) {
     follower_status.description = 'Decelerate - Increase Distance';
-    follower_status.message_condition = 'Too Close DANGER!';
+    follower_status.message_condition = 'Too Close';
     follower_status.message_action = 'Decelerate';
     follower_status.code = 'A';
     follower_a = 0;

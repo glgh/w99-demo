@@ -1,18 +1,18 @@
 #wrapper{
    width:100%;
-   min-width:920px;
+   min-width:830px;
    height:auto;
    margin:25px;
 }
 #left_column{
    float:left;
-   width:500px;
+   width:480px;
    padding: 5px;
 }
 #right_column{
    /*float:right;*/
    overflow: hidden;
-   min-width:420px;
+   min-width:350px;
    height:auto;
    padding: 5px;
 }

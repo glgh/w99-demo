@@ -1,9 +1,9 @@
 const TRACK_CANVAS_WIDTH = 400; //px
-const TRACK_CANVAS_HEIGHT = 400; //px
-const TRACK_RADIUS = 45; //m - use 58
+const TRACK_CANVAS_HEIGHT = 450; //px
+const TRACK_RADIUS = 42; //m - use 58
 const TRACK_WIDTH = 3.7; //m
 const TRACK_COLOR = "#D3D3D3";
-const TRACK_DISPLAY_FACTOR = 3.28; //m -> px
+const TRACK_DISPLAY_FACTOR = 4; //3.28; //m -> px
 
 function drawTrack() {
   var context = document.getElementById("track").getContext("2d");
