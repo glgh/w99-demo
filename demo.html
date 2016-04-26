@@ -144,13 +144,13 @@
         });
         $("#btn_reset").click(function(){
           model.simPause();
-          //setStatusCanvas(model.cars.length);
           model.resetCars();
           $("label[id^='btn_cars_']").attr( "disabled", false);
         });
 
         //use click event - not change - change doesn't fire every time
-        $("label[id^='btn_cars_']").click(function(){
+        $("label[id^='btn_cars_']").click(function(e){
+          if (e.target.getAttribute("disabled") === "disabled") {return};
           var value = this.getAttribute('value');
           var n_car = model.cars.length; //default n_car
           var spacing = model.spacing; //default spacing
