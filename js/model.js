@@ -109,7 +109,8 @@ w99.prototype.calculateCarStatus = function(dt) {
     this.cars[i].v += this.cars[i].a * dt;
     this.cars[i].v = Math.max(this.cars[i].v, 0); //v can't be negative
     this.cars[i].x += this.cars[i].v * dt;
-
+  }
+  for (var i = 0; i < n; i++) {
     i_leader = (i !== n-1)? i+1: 0;
     w99_results = this.carFollowing(this.cars[i_leader], this.cars[i]);
     this.cars[i].a = w99_results[0];
