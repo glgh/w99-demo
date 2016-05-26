@@ -72,8 +72,8 @@ function plotStatus(canvas, car, index, parameters) {
   var sdxo = car.status.sdxo;
   var dv = car.status.dv;
 
-  var f_sdvc = function(dx) {return (parameters.cc4 - parameters.cc6*dx*dx)};
-  var f_sdvo = function(dx) {return (parameters.cc6*dx*dx + parameters.cc5)};
+  var f_sdvc = function(dx) {return (parameters.cc4 - parameters.cc6/10000*dx*dx)};
+  var f_sdvo = function(dx) {return (parameters.cc6/10000*dx*dx + parameters.cc5)};
   var f_sdxv = function(dv) {return (sdxo + parameters.cc3*(dv-parameters.cc4))};
 
   //Begin Plot
@@ -183,7 +183,6 @@ function plotStatus(canvas, car, index, parameters) {
   context.textAlign = "center";
   context.textBaseline = "middle";
   context.fillText('dv', -30, STATUS_PLOT_HEIGHT/2 - 6);
-  //context.fillText('(mph)', -49, STATUS_PLOT_HEIGHT/2 + 8);
   context.fillText('(m/s)', -30, STATUS_PLOT_HEIGHT/2 + 6);
 
   //dv tick
@@ -202,7 +201,7 @@ function plotStatus(canvas, car, index, parameters) {
     context.closePath();
     //var dv_label = dv_tick.mps2mph().toFixed(0).toString();
     var dv_label = dv_tick.toFixed(0).toString();
-    var dv_label_x = - 5;
+    var dv_label_x = -4;
     var dv_label_y = dv_tick.dv2y();
     context.fillText(dv_label, dv_label_x, dv_label_y);
     dv_tick += STATUS_DV_TICK_UNIT
@@ -212,7 +211,6 @@ function plotStatus(canvas, car, index, parameters) {
   context.font = '12px Arial';
   context.textAlign = "center";
   context.textBaseline = "alphabetic";
-  //context.fillText('dx (ft)', STATUS_PLOT_WIDTH/2, STATUS_PLOT_HEIGHT + 25);
   context.fillText('dx (m)', STATUS_PLOT_WIDTH/2, STATUS_PLOT_HEIGHT + 25);
 
   //dx tick
@@ -232,7 +230,7 @@ function plotStatus(canvas, car, index, parameters) {
     //var dx_label = dx_tick.m2ft().toFixed(0).toString();
     var dx_label = dx_tick.toFixed(0).toString();
     var dx_label_x = dx_tick.dx2x();
-    var dx_label_y = STATUS_PLOT_HEIGHT + 13;
+    var dx_label_y = STATUS_PLOT_HEIGHT + 12;
     context.fillText(dx_label, dx_label_x, dx_label_y);
     dx_tick += STATUS_DX_TICK_UNIT;
   }

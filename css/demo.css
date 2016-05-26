@@ -1,18 +1,51 @@
-#wrapper{
-   width:100%;
-   min-width:830px;
-   height:auto;
-   margin:25px;
+/*Page Layout*/
+.wrapper{
+   margin: 25px;
 }
-#left_column{
-   float:left;
-   width:480px;
-   padding: 5px;
+.column-wrapper{
+   float: left;
+   width: 100%;
+   min-width: 1190px;
 }
-#right_column{
-   /*float:right;*/
-   overflow: hidden;
-   min-width:350px;
-   height:auto;
-   padding: 5px;
+.column-left{
+   float: left;
+   width: 375px;
+   padding-right: 15px;
+}
+.column-middle{
+   float: left;
+   width: 450px;
+   padding-right: 15px;
+}
+.column-right{
+   float: none;
+   margin-left: 825px;
+   #width: 100%
+   min-width: 365px;
+   padding-right: 15px;
+ }
+.header{
+   float: left;
+   width: 100%;
+}
+.footer{
+   float: left;
+   width: 100%;
+}
+
+/*Slider Control*/
+.slider{
+  width: 300px;
+}
+
+.slider-handle {
+	background: grey;
+}
+
+.slider-selection{
+  background: white;
+}
+
+.slider-track-high{
+	background: white;
 }

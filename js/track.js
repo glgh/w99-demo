@@ -1,5 +1,5 @@
 const TRACK_CANVAS_WIDTH = 400; //px
-const TRACK_CANVAS_HEIGHT = 450; //px
+const TRACK_CANVAS_HEIGHT = 400; //px
 const TRACK_RADIUS = 42; //m - use 58
 const TRACK_WIDTH = 3.7; //m
 const TRACK_COLOR = "#D3D3D3";

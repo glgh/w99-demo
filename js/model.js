@@ -5,7 +5,7 @@ var W99_ORIGINAL = {
   cc3:-12.00, //Threshold for Entering 'Following' - s
   cc4: -0.25, //Negative 'Following' Threshold - m/s
   cc5:  0.35, //Positive 'Following' Threshold - m/s
-  cc6: 11.44/17000, //Speed Dependency of Oscillation - 10^-4 rad/s
+  cc6:  6.00, //Speed Dependency of Oscillation - 10^-4 rad/s
   cc7:  0.25, //Oscillation Acceleration - m/s^2
   cc8:  2.00, //Standstill Acceleration - m/s^2
   cc9:  1.50, //Acceleration at 80km/h - m/s^2
@@ -18,7 +18,7 @@ var W99_DEFAULT = {
   cc3:-12.00, //Threshold for Entering 'Following' - s
   cc4: -0.25*6, //Negative 'Following' Threshold - m/s
   cc5:  0.35*6, //Positive 'Following' Threshold - m/s
-  cc6: 11.44/17000, //Speed Dependency of Oscillation - 10^-4 rad/s
+  cc6:  6.00, //Speed Dependency of Oscillation - 10^-4 rad/s
   cc7:  0.25, //Oscillation Acceleration - m/s^2
   cc8:  2.00, //Standstill Acceleration - m/s^2
   cc9:  1.50, //Acceleration at 80km/h - m/s^2
@@ -31,7 +31,7 @@ const CAR_COLOR = ["DarkGreen", "Crimson", "DarkViolet", "Black", "Fuchsia",
                   "SlateBlue", "MediumBlue", "Maroon", "DarkKhaki", "#31B404",
                   "#6E6E6E"];
 const N_CAR_MAX = 14;
-
+const V_DESIRED_DEFAULT = 35; //m/s
 const DISPLAY_RESOLUTION = 20;
 const SIMULATION_RESOLUTION = 20;
 
@@ -66,7 +66,7 @@ w99.prototype.setCars = function(n, spacing){
   this.cars = [];
   var x0 = 0;
   for (var i = 0; i < n; i++) {
-    this.addCar(CAR_COLOR[i], 42+i, x0+i*spacing, 0, 0, 25);
+    this.addCar(CAR_COLOR[i], 42+i, x0+i*spacing, 0, 0, V_DESIRED_DEFAULT);
   }
   this.redrawAll(false);
 }
@@ -143,7 +143,7 @@ w99.prototype.carFollowing = function(leader, follower) {
   var cc3 = this.parameters.cc3;
   var cc4 = this.parameters.cc4;
   var cc5 = this.parameters.cc5;
-  var cc6 = this.parameters.cc6;
+  var cc6 = this.parameters.cc6/10000;
   var cc7 = this.parameters.cc7;
   var cc8 = this.parameters.cc8;
   var cc9 = this.parameters.cc9;
