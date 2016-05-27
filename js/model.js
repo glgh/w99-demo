@@ -67,6 +67,8 @@ function w99(w99_parameters){
   this.cars = [];
   this.spacing = undefined;
   this.interval_handle;
+  this.status = {}
+  this.status.failed = false;
 }
 
 w99.prototype.addCar = function(color, seed, x, v, a, v_desired) {
@@ -117,12 +119,15 @@ w99.prototype.simPause = function() {
   clearInterval(this.interval_handle);
 }
 
-w99.prototype.simStop = function() {
-  //Pause + Clear
+w99.prototype.simReset = function() {
+  this.simPause();
+  this.resetCars();
+  this.status.failed = false;
 }
 
 w99.prototype.nextStep = function() {
   if (this.cars.length <= 0) {return} // # of car must > 0
+  if (this.status.failed === true) {return}
 
   var dt = 1/SIMULATION_RESOLUTION;
   this.calculateCarStatus(dt); //calculate next step
@@ -139,9 +144,16 @@ w99.prototype.calculateCarStatus = function(dt) {
   }
   for (var i = 0; i < n; i++) {
     i_leader = (i !== n-1)? i+1: 0;
-    w99_results = this.carFollowing(this.cars[i_leader], this.cars[i]);
+    w99_results = this.carFollowing(this.cars[i_leader], this.cars[i], (i_leader===0));
     this.cars[i].a = w99_results[0];
     this.cars[i].status = w99_results[1];
+
+    if (this.cars[i].status.dx <= 0) {
+      this.status.failed = true; //crash detected - return
+      console.log('Crash Detected - Simulation Stopped')
+      return
+    }
+
   }
 }
 
@@ -163,7 +175,7 @@ w99.prototype.redrawAll = function(drawStatus){
   }
 }
 
-w99.prototype.carFollowing = function(leader, follower) {
+w99.prototype.carFollowing = function(leader, follower, leader_is_car0) {
   var cc0 = this.parameters.cc0;
   var cc1 = this.parameters.cc1;
   var cc2 = this.parameters.cc2;
@@ -176,7 +188,7 @@ w99.prototype.carFollowing = function(leader, follower) {
   var cc9 = this.parameters.cc9;
 
   var dx = leader.x - follower.x - leader.length;
-  if (dx < 0) {dx += 2*Math.PI*TRACK_RADIUS}
+  if (leader_is_car0) {dx += 2*Math.PI*TRACK_RADIUS}
   var dv = leader.v - follower.v;
   //var ax = leader.length + cc0; //desired distance between two stationary vehs
 

@@ -183,8 +183,7 @@
           model.simPause();
         });
         $("#btn_reset").click(function(){
-          model.simPause();
-          model.resetCars();
+          model.simReset();
           $("label[id^='btn_cars_']").attr( "disabled", false);
         });
 
