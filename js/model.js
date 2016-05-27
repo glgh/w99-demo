@@ -24,6 +24,33 @@ var W99_DEFAULT = {
   cc9:  1.50, //Acceleration at 80km/h - m/s^2
 }
 
+// var W99_AGGRESSIVE = {
+//   cc0:  1.50*0.9, //Standstill Distance - m
+//   cc1:  1.30*0.9, //Spacing Time - second
+//   cc2:  4.00*2, //Following Variation ("max drift") - m
+//   cc3:-12.00, //Threshold for Entering 'Following' - s
+//   cc4: -0.25*6, //Negative 'Following' Threshold - m/s
+//   cc5:  0.35*6, //Positive 'Following' Threshold - m/s
+//   cc6:  6.00, //Speed Dependency of Oscillation - 10^-4 rad/s
+//   cc7:  0.25, //Oscillation Acceleration - m/s^2
+//   cc8:  2.00, //Standstill Acceleration - m/s^2
+//   cc9:  1.50, //Acceleration at 80km/h - m/s^2
+// }
+//
+// var W99_CONSERVATIVE = {
+//   cc0:  1.50*0.9, //Standstill Distance - m
+//   cc1:  1.30*0.9, //Spacing Time - second
+//   cc2:  4.00*2, //Following Variation ("max drift") - m
+//   cc3:-12.00, //Threshold for Entering 'Following' - s
+//   cc4: -0.25*6, //Negative 'Following' Threshold - m/s
+//   cc5:  0.35*6, //Positive 'Following' Threshold - m/s
+//   cc6:  6.00, //Speed Dependency of Oscillation - 10^-4 rad/s
+//   cc7:  0.25, //Oscillation Acceleration - m/s^2
+//   cc8:  2.00, //Standstill Acceleration - m/s^2
+//   cc9:  1.50, //Acceleration at 80km/h - m/s^2
+// }
+
+
 const CAR_WIDTH = 1.8; //m
 const CAR_LENGTH = 5; //m
 const CAR_COLOR = ["DarkGreen", "Crimson", "DarkViolet", "Black", "Fuchsia",
