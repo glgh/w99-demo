@@ -67,8 +67,14 @@ function w99(w99_parameters){
   this.cars = [];
   this.spacing = undefined;
   this.interval_handle;
+
   this.status = {}
+  this.resetSystemStatus()
+}
+
+w99.prototype.resetSystemStatus = function(){
   this.status.failed = false;
+  this.status.v_avg = 0;
 }
 
 w99.prototype.addCar = function(color, seed, x, v, a, v_desired) {
@@ -120,8 +126,8 @@ w99.prototype.simPause = function() {
 }
 
 w99.prototype.simReset = function() {
-  this.status.failed = false; //place before resetCars so that any re-draw gives correct system message
   this.simPause();
+  this.resetSystemStatus(); //place before resetCars so that any re-draw gives correct system message
   this.resetCars();
 }
 
@@ -136,12 +142,18 @@ w99.prototype.nextStep = function() {
 
 w99.prototype.calculateCarStatus = function(dt) {
   var n = this.cars.length;
+  var v_sum = 0; //for v_avg calculation
 
   for (var i = 0; i < n; i++) {
     this.cars[i].v += this.cars[i].a * dt;
     this.cars[i].v = Math.max(this.cars[i].v, 0); //v can't be negative
     this.cars[i].x += this.cars[i].v * dt;
+
+    v_sum += this.cars[i].v
   }
+
+  this.status.v_avg = v_sum/n;
+
   for (var i = 0; i < n; i++) {
     i_leader = (i !== n-1)? i+1: 0;
     w99_results = this.carFollowing(this.cars[i_leader], this.cars[i], (i_leader===0));
@@ -160,7 +172,7 @@ w99.prototype.calculateCarStatus = function(dt) {
 w99.prototype.redrawAll = function(drawStatus){
   var n = this.cars.length;
 
-  drawSystemStatus(this.status);
+  updateSystemStatus(this.status);
 
   drawTrack(); //draw track
   for (var i = 0; i < n; i++) {

@@ -1,9 +1,11 @@
-function drawSystemStatus(systemStatus) {
-  var text_area = document.getElementById("status_system");
-  if (systemStatus.failed) {
-    var message = '<font color="red">Failed!</font>'
+function updateSystemStatus(status) {
+  if (status.failed) {
+    var msg = '<font color="red">Failed!</font>'
   } else {
-    var message = 'Normal'
+    var msg = 'Normal'
   }
-  text_area.innerHTML = message;
+  document.getElementById("system_status_msg").innerHTML = msg;
+
+  var v_avg = "Average Speed: " + status.v_avg.toFixed(1) + " m/s";
+  document.getElementById("system_status_v_avg").innerHTML = v_avg;
 }
