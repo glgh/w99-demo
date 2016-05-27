@@ -66,7 +66,7 @@ Number.prototype.dv2y = function() {
   return Math.round(STATUS_PLOT_HEIGHT - (this.valueOf()-DV_MIN)/(DV_MAX - DV_MIN)*STATUS_PLOT_HEIGHT);
 };
 
-function plotStatus(canvas, car, index, parameters) {
+function plotCarStatus(canvas, car, index, parameters) {
   var dx = car.status.dx;
   var sdxc = car.status.sdxc;
   var sdxo = car.status.sdxo;
@@ -295,7 +295,7 @@ function plotStatus(canvas, car, index, parameters) {
   context.translate(-STATUS_LEFT_PADDING, -STATUS_TOP_PADDING);
 }
 
-function plotStatusEmpty(canvas, car, index) {
+function plotCarStatusEmpty(canvas, car, index) {
   var context = canvas.getContext("2d");
   context.clearRect(0, 0, STATUS_CANVAS_WIDTH, STATUS_CANVAS_HEIGHT);
 

@@ -120,9 +120,9 @@ w99.prototype.simPause = function() {
 }
 
 w99.prototype.simReset = function() {
+  this.status.failed = false; //place before resetCars so that any re-draw gives correct system message
   this.simPause();
   this.resetCars();
-  this.status.failed = false;
 }
 
 w99.prototype.nextStep = function() {
@@ -160,6 +160,8 @@ w99.prototype.calculateCarStatus = function(dt) {
 w99.prototype.redrawAll = function(drawStatus){
   var n = this.cars.length;
 
+  drawSystemStatus(this.status);
+
   drawTrack(); //draw track
   for (var i = 0; i < n; i++) {
     var car = this.cars[i];
@@ -168,9 +170,9 @@ w99.prototype.redrawAll = function(drawStatus){
     //draw status
     var canvas_status = document.getElementById('status' +  (i+1).toString());
     if (drawStatus){
-      plotStatus(canvas_status, car, i+1, this.parameters); //draw status
+      plotCarStatus(canvas_status, car, i+1, this.parameters); //draw status
     } else {
-      plotStatusEmpty(canvas_status, car, i+1); //draw status - empty
+      plotCarStatusEmpty(canvas_status, car, i+1); //draw status - empty
     }
   }
 }
