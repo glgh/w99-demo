@@ -1,6 +1,6 @@
 /*Page Layout*/
 .wrapper{
-   margin: 25px;
+   margin: 20px;
 }
 .column-wrapper{
    float: left;
@@ -9,17 +9,17 @@
 }
 .column-left{
    float: left;
-   width: 375px;
+   width: 370px;
    padding-right: 15px;
 }
 .column-middle{
    float: left;
-   width: 450px;
+   width: 440px;
    padding-right: 15px;
 }
 .column-right{
    float: none;
-   margin-left: 825px;
+   margin-left: 810px;
    #width: 100%
    min-width: 365px;
    padding-right: 15px;
@@ -35,7 +35,7 @@
 
 /*Slider Control*/
 .slider{
-  width: 300px;
+  width: 275px !important;
 }
 
 .slider-handle {

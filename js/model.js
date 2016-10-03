@@ -24,33 +24,6 @@ var W99_DEFAULT = {
   cc9:  1.50, //Acceleration at 80km/h - m/s^2
 }
 
-// var W99_AGGRESSIVE = {
-//   cc0:  1.50*0.9, //Standstill Distance - m
-//   cc1:  1.30*0.9, //Spacing Time - second
-//   cc2:  4.00*2, //Following Variation ("max drift") - m
-//   cc3:-12.00, //Threshold for Entering 'Following' - s
-//   cc4: -0.25*6, //Negative 'Following' Threshold - m/s
-//   cc5:  0.35*6, //Positive 'Following' Threshold - m/s
-//   cc6:  6.00, //Speed Dependency of Oscillation - 10^-4 rad/s
-//   cc7:  0.25, //Oscillation Acceleration - m/s^2
-//   cc8:  2.00, //Standstill Acceleration - m/s^2
-//   cc9:  1.50, //Acceleration at 80km/h - m/s^2
-// }
-//
-// var W99_CONSERVATIVE = {
-//   cc0:  1.50*0.9, //Standstill Distance - m
-//   cc1:  1.30*0.9, //Spacing Time - second
-//   cc2:  4.00*2, //Following Variation ("max drift") - m
-//   cc3:-12.00, //Threshold for Entering 'Following' - s
-//   cc4: -0.25*6, //Negative 'Following' Threshold - m/s
-//   cc5:  0.35*6, //Positive 'Following' Threshold - m/s
-//   cc6:  6.00, //Speed Dependency of Oscillation - 10^-4 rad/s
-//   cc7:  0.25, //Oscillation Acceleration - m/s^2
-//   cc8:  2.00, //Standstill Acceleration - m/s^2
-//   cc9:  1.50, //Acceleration at 80km/h - m/s^2
-// }
-
-
 const CAR_WIDTH = 1.8; //m
 const CAR_LENGTH = 5; //m
 const CAR_COLOR = ["DarkGreen", "Crimson", "DarkViolet", "Black", "Fuchsia",
@@ -75,6 +48,7 @@ function w99(w99_parameters){
 w99.prototype.resetSystemStatus = function(){
   this.status.failed = false;
   this.status.v_avg = 0;
+  this.status.v_sdv = 0;
 }
 
 w99.prototype.addCar = function(color, seed, x, v, a, v_desired) {
@@ -153,6 +127,13 @@ w99.prototype.calculateCarStatus = function(dt) {
   }
 
   this.status.v_avg = v_sum/n;
+
+  // Calculate Standard Deviation
+  var sum_sqr_diff = 0
+  for (var i = 0; i < n; i++) {
+    sum_sqr_diff += Math.pow(this.cars[i].v - this.status.v_avg, 2)
+  }
+  this.status.v_sdv = Math.sqrt(sum_sqr_diff/n)
 
   for (var i = 0; i < n; i++) {
     i_leader = (i !== n-1)? i+1: 0;
