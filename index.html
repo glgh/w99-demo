@@ -123,7 +123,7 @@
             <h4>System Status</h4>
             <p id="system_status_msg"></p>
             <p id="system_status_v_avg"></p>
-            <p id="system_status_v_sdv"></p>            
+            <p id="system_status_v_sdv"></p>
           </div>
         </div>
 
@@ -157,11 +157,6 @@
         }
       }
 
-      function applyW99Parameters(w99_parameters){
-         for (var i = 0; i < 10; i++) {
-           $("#slider_cc" + i.toString()).slider('setValue' , w99_parameters['cc' + i.toString()], true, true)
-         }
-      }
 
       const DEFAULT_N_CAR = 12;
       const DEFAULT_SPACING = 16.5;
@@ -170,6 +165,14 @@
         var model = new w99(W99_DEFAULT);
         setStatusCanvas(DEFAULT_N_CAR);
         model.setCars(DEFAULT_N_CAR, DEFAULT_SPACING);
+
+        function applyW99Parameters(w99_parameters){
+          for (var i = 0; i < 10; i++) {
+            var cc_id = 'cc' + i.toString()
+            $("#slider_cc" + i.toString()).slider('setValue', w99_parameters[cc_id], true, true)
+            model.parameters[cc_id] = w99_parameters[cc_id];
+          }
+        }
 
         $("#btn_start").click(function(){
           model.simRunContinous();
