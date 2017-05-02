@@ -177,10 +177,10 @@ w99.prototype.carFollowing = function(leader, follower, leader_is_car0) {
   var cc3 = this.parameters.cc3;
   var cc4 = this.parameters.cc4;
   var cc5 = this.parameters.cc5;
-  var cc6 = this.parameters.cc6/10000;
+  var cc6 = this.parameters.cc6/17000;
   var cc7 = this.parameters.cc7;
   var cc8 = this.parameters.cc8;
-  var cc9 = this.parameters.cc9;
+  var cc9 = (this.parameters.cc9 - this.parameters.cc8) * 3.6 / 80;
 
   var dx = leader.x - follower.x - leader.length;
   if (leader_is_car0) {dx += 2*Math.PI*TRACK_RADIUS}
